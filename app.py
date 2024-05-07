@@ -4,10 +4,9 @@ import sqlite3
 
 app = Flask(__name__)
 
-# Create a basic SQLite database for storing books
-def init_db():
-    with sqlite3.connect('library.db') as conn:
-        conn.execute('''CREATE TABLE IF NOT EXISTS books
+
+with sqlite3.connect('library.db') as conn:
+    conn.execute('''CREATE TABLE IF NOT EXISTS books
                         (id INTEGER PRIMARY KEY AUTOINCREMENT, 
                          title TEXT, 
                          author TEXT, 
@@ -52,6 +51,3 @@ def search_books():
         results = conn.execute('SELECT * FROM books WHERE title LIKE ? OR author LIKE ?', (f'%{search_query}%', f'%{search_query}%')).fetchall()
     return jsonify(results)
 
-if __name__ == '__main__':
-    init_db()
-    app.run(port=9001)
